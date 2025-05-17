@@ -20,6 +20,7 @@
 {{ $placeholder:= .Placeholder | default false }}
 {{ $placeholderQuality:= "40x q20" }}
 {{ $fetchpriority := .FetchPriority | default "auto" }}
+{{ $decoding := .Decoding | default "auto" }}
 
 <!-- check content image  -->
 {{ with $context.Resources.GetMatch $imagePath }}
@@ -37,7 +38,7 @@
 {{ if or (hasPrefix $imagePath "http") (fileExists (add `static/` (string $imagePath))) }}
   <img
     loading="{{ .Loading }}"
-    decoding="async"
+    decoding="{{ $decoding }}"
     src="{{ $imagePath | absURL }}"
     alt="{{ .Alt }}"
     class="{{ $class }} img"
@@ -77,7 +78,7 @@
       <img
         src="{{ $image.RelPermalink }}"
         loading="{{ $loading }}"
-        decoding="async"
+        decoding="{{ $decoding }}"
         alt="{{ .Alt }}"
         class="{{ $class }} img"
         fetchpriority="{{ $fetchpriority }}"
@@ -126,7 +127,7 @@
             data-src={{ $imageWebp.RelPermalink }}
           {{ else }}
             src="{{ $imageWebp.RelPermalink }}" loading="{{ $loading }}"
-            decoding="async"
+            decoding="{{ $decoding }}"
           {{ end }}
 
           alt="{{ .Alt }}"
@@ -186,7 +187,7 @@
             data-src={{ $imageWebp.RelPermalink }} alt="placeholder"
           {{ else }}
             src="{{ $imageWebp.RelPermalink }}" loading="{{ $loading }}"
-            decoding="async" alt="{{ .Alt }}"
+            decoding="{{ $decoding }}" alt="{{ .Alt }}"
           {{ end }}
 
           class="{{ if $placeholder }}lazy{{ end }} {{ $class }} img"
@@ -262,7 +263,7 @@
               src="data:image/jpeg;base64,{{ $placeholderImage.Content | base64Encode }}"
               data-src={{ $imageFallback.RelPermalink }}
             {{ else }}
-              loading="{{ $loading }}" decoding="async"
+              loading="{{ $loading }}" decoding="{{ $decoding }}"
               src="{{ $imageFallback.RelPermalink }}"
             {{ end }}class="{{ if $placeholder }}
               lazy
